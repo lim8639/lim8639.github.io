@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title>沫沫的时光机 Blog</title>
+        <link>https://your-docusaurus-test-site.com/blog</link>
+        <description>沫沫的时光机 Blog</description>
+        <lastBuildDate>Wed, 12 Jan 2022 11:56:26 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <item>
+            <title><![CDATA[第一次使用git配置]]></title>
+            <link>https://your-docusaurus-test-site.com/blog/如何使用git</link>
+            <guid>/如何使用git</guid>
+            <pubDate>Wed, 12 Jan 2022 11:56:26 GMT</pubDate>
+            <description><![CDATA[一. git安装及github账号注册]]></description>
+            <content:encoded><![CDATA[<h2>一. git安装及github账号注册</h2><ol><li>git 安装</li></ol><pre><code class="language-html">下载地址：
+https://git-for-windows.github.io/
+</code></pre><ol start="2"><li><a href="https://github.com/">github创建账号</a></li></ol><h2>二. git初始化配置</h2><p> Git安装成功后，打开Git Bash</p><ol><li>设置user.name和user.email</li></ol><pre><code class="language-shell">$ git config --global user.name &quot;你的用户名&quot;
+$ git config --global user.email &quot;你的邮箱&quot;
+</code></pre><ol start="2"><li>生成SSH秘钥
+C盘用户目录下，.ssh文件夹执行</li></ol><pre><code class="language-shell">$ ssh-keygen -t rsa -C &quot;你的邮箱&quot;
+</code></pre><p>如果不设置密码，连续三个回车，最终.ssh文件夹下生成两个文件：</p><ul><li>id_rsa</li><li>id_rsa.pub</li></ul><ol start="3"><li>添加秘钥
+.ssh文件目录下执行</li></ol><pre><code class="language-shell"> ssh-add id_rsa
+</code></pre><p>1
+如果报错：Could not open a connection to your authentication agent.
+则先执行：</p><p>$  ssh-agent bash
+之后再执行：</p><p>$ ssh-add id_rsa
+1
+则执行结果：
+Identity added: id_rsa (id_rsa)
+1
+4. 登录github,配置ssh
+点击用户头像位置，选择settings</p><p>左侧选择 SSH and GPG keys</p><p>选择 New SSH key</p><p>title: 自己起个名字
+key: 复制你本地.ssh文件目录下id_rsa.pub的内容</p><p>点击 Add SSH key</p><p>5.测试配置结果
+ssh -T <a href="mailto:git@github.com">git@github.com</a>
+1
+2
+会看到：
+The authenticity of host &#x27;github.com (192.30.255.112)&#x27; can&#x27;t be established.
+RSA key fingerprint is SHA256:xxxxxxxxxxxxxxxxxxxxxxxx.
+Are you sure you want to continue connecting (yes/no)?</p><p>选择 yes</p><p>最终会提示：</p><p>Hi 你的用户名! You&#x27;ve successfully authenticated, but GitHub does not provide shell access.
+1
+至此，说明配置成功~~</p><h2>三、开始使用github</h2><p>1.github新建项目clone至本地
+这种方式简单，直接git clone ：</p><p>$ git  clone  xxxxxxx
+1
+2.本地新建项目上传至github
+本地新建项目，提交至git</p><p>（1） 本地新建项目目录
+$ mrdir web-learning
+（2） 初始化git
+$ cd web-learning
+$ git init
+web-learning目录下会增加.git目录
+（3） 本地新增文件
+新建文件index.html</p><p>查看当前目录所有还没有被git管理的文件和被git管理且被修改但还未提交的文件</p><p>$ git status
+文件 名 红色 标出</p><p>$ git add index.html
+$ git status
+之前红色的文件，变为绿色</p><p>（4）本地add的文件提交到仓库
+$ git commit -m &quot;本次commit的message&quot;
+1
+（5）将本地仓库关联至远端
+首先在github上新建repository, 然后copy新建仓库的git地址
+将本地仓库与远端仓库关联：</p><p>$  git remote add origin xxxxxxxx
+1
+将已经commit的代码push到远端：</p><p>$ git push -u origin master
+1
+完成代码上传。
+可以在github确认下。</p>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[部署服务器]]></title>
+            <link>https://your-docusaurus-test-site.com/blog/秋招攻略</link>
+            <guid>/秋招攻略</guid>
+            <pubDate>Wed, 12 Jan 2022 11:53:40 GMT</pubDate>
+            <description><![CDATA[榨干服务器，这当然是一句玩笑话，榨干性能还不是简简单单吗，下面罗列几个简单的应用]]></description>
+            <content:encoded><![CDATA[<blockquote><p>榨干服务器，这当然是一句玩笑话，榨干性能还不是简简单单吗，下面罗列几个简单的应用</p><h2>1.nginx转发，不暴露其他端口</h2></blockquote><pre><code class="language-nginx">    proxy_pass  http://127.0.0.1:8088; # 转发规则
+    proxy_set_header Host $proxy_host; # 修改转发请求头，让8080端口的应用可以受到真实的请求
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+</code></pre><p>在各个路径加入转发点，连带请求头一起转发</p><h2>2.安装netdata</h2><p>netdata是一个优秀的在线服务器信息查看面板。</p><pre><code class="language-bash">
+bash &lt;(curl -Ss  https://my-netdata.io/kickstart-static64.sh)
+systemctl start netdata 
+</code></pre><h2>3.部署可道云</h2><pre><code class="language-bash">wget https://static.kodcloud.com/update/download/kodbox.1.25.zip
+unzip kodbox.1.25.zip &amp;&amp; chmod -Rf 777 ./*
+</code></pre><p>可道云是一个网盘系统。支持在线桌面，支持在线文档的优秀网盘系统。部署环境 lnmp</p><h2>4.部署为知笔记</h2><p>访问<a href="https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors?userCode=92&amp;share_source=copy_link&amp;accounttraceid=7d7edd3dd1214f53aeab89e26f7b842catpr">阿里云控制台</a>获取镜像加速链接</p><p>运行环境docker，配置docker镜像源</p><pre><code class="language-bash">sudo mkdir -p /etc/docker
+sudo tee /etc/docker/daemon.json &lt;&lt;-&#x27;EOF&#x27;
+{
+  &quot;registry-mirrors&quot;: [&quot;https://db5sqf0y.mirror.aliyuncs.com&quot;]
+}
+EOF
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+</code></pre><p>安装命令</p><pre><code class="language-bash">
+docker run --name wiz --restart=always -it -d -v  ~/wizdata:/wiz/storage -v 
+ /etc/localtime:/etc/localtime -p 8081:80 -p 9269:9269/udp  wiznote/wizserver
+</code></pre><h2>5.部署oneManger</h2><p>一个在线onedriver操控面板服务。需要申请onedriverAPI</p><h2>当前已经部署的服务</h2><p>服务器就是要搭积木，一个一个服务进行搭建，需要什么就写什么。</p><p><strong>全部使用nginx转发的好处就是，能够使用二级域名定向到端口，开启https服务，增强安全性，同时可以配置nginx防火墙，进一步保护服务器</strong></p><p>坏处就是nginx崩溃的话，会影响到全部的服务</p>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[我什么都不知道]]></title>
+            <link>https://your-docusaurus-test-site.com/blog/index</link>
+            <guid>/index</guid>
+            <pubDate>Wed, 12 Jan 2022 11:51:54 GMT</pubDate>
+            <description><![CDATA[我可以he]]></description>
+            <content:encoded><![CDATA[<p>我可以he</p><h1>你好是</h1>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[在燕山大学的四年]]></title>
+            <link>https://your-docusaurus-test-site.com/blog/flex</link>
+            <guid>flex</guid>
+            <pubDate>Wed, 12 Jan 2022 00:00:00 GMT</pubDate>
+            <description><![CDATA[博主的技术探讨路程]]></description>
+            <content:encoded><![CDATA[<blockquote><p>博主的技术探讨路程</p></blockquote><h2>一、背景</h2><ul><li>东北重型机械学院经管院本科生</li><li>电子商务系学生</li><li>双非管理学学士</li></ul><h2>二、技术历程</h2><h3>大一</h3><ol><li>研究 Adobe，学会 PS PR</li><li>计算机素养课挂科，C 语言课程浑水摸鱼，未掌握编程技巧</li><li>进入校园网络协会组织，学习基本运维技巧和计算机的基本拆卸与维修，重装操作系统等原理。</li></ol><h3>大二</h3><ol><li>学习数据结构，最喜欢栈结构，基于 C 语言实现。通过数据结构掌握面向数据编程。</li><li>在坐火车回家的路上，学习了 20 个小时的 Java。新冠疫情爆发时期，学习 JavaWEB 和数据库，面向数据库编程主要是 Tomcat 和 Servlet。</li><li>因为项目需要自学40小时前端教程。前端水平基于 Ajax 和 JQuery ,响应式框架基于 Bootstrap</li><li>学习网络原理，自顶向下的网络架构，编程语言基于 HTTP 协议的web开发。</li></ol><h3>大三</h3><ol><li>学习安卓开发，选修课学过一次。之后发现专业课还有一次。</li><li>学习 PHP，接触网络编程。实现前后端分离式的开发。</li><li>学习 SpringBoot，学了 Spring,因为配置繁琐困难，放弃。</li><li>学习管理信息系统，基于管理与数据业务的系统化设计。</li></ol><h3>大四</h3><ul><li>因为工作需要，学习并开发了基于 Vue 实现的 Chrome 插件。</li><li>开发部署了本<a href="http://blog.limfly.cn">博客</a></li><li><strong>由于毕业设计需要，即将学习： 微信小程序开发</strong></li></ul><h2>小结</h2><p>5.17-8.20 在某电商企业，任广告运营实习生。因为多种环境因素，<strong>没有成为一名程序员</strong>。<br/>
+<!-- -->秋招签了某电商企业的产品运营岗。<strong>也许以后(指春招)会成为一个程序员，也许不会。</strong>是否做程序员， 有利有弊，无论是薪资还是职业生涯。<br/>
+<!-- -->商业逻辑的前 20% 还是研发垂直领域的前 20%，所有的选择都是多种原因导向，在当的时候，一定是最好的选择。
+但是<strong>学过的知识与技术，对人的思维养成，对能力的锤炼都会在职业生涯中体现。</strong></p>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[歡迎訪問沫沫的博客]]></title>
+            <link>https://your-docusaurus-test-site.com/blog/welcome</link>
+            <guid>welcome</guid>
+            <pubDate>Wed, 12 Jan 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[服务器部署]]></title>
+            <link>https://your-docusaurus-test-site.com/blog/服务器部署</link>
+            <guid>服务器部署</guid>
+            <pubDate>Thu, 26 Aug 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[操作系统]]></description>
+            <content:encoded><![CDATA[<h2>操作系统</h2><p>操作系统选择一贯稳定的centos7</p><h2>软件平台</h2><p>nginx平台：nginx是老毛子开发的静态服务器软件，优秀的静态资源分发功能，
+性能优越的方向代理功能。配合web应用，通过反向代理实现https，端口转发等功能。保证性能和安全性
+::: danger 注意
+当所有的转发服务都使用nginx时，nginx的安全配置格外重要，否则nginx崩溃会关闭全部的入口
+:::</p><h2>web应用</h2><h3>部署博客系统</h3>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[欢迎访问沫沫的时光机]]></title>
+            <link>https://your-docusaurus-test-site.com/blog/welcome</link>
+            <guid>welcome</guid>
+            <pubDate>Thu, 26 Aug 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[博客編寫文檔 are powered by the  插件地址.]]></description>
+            <content:encoded><![CDATA[<p><a href="https://docusaurus.io/docs/blog">博客編寫文檔</a> are powered by the <a href="https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-blog"> 插件地址</a>.</p><p>A blog post folder can be convenient to co-locate blog post images:</p><p><img src="./docusaurus-plushie-banner.jpeg" alt="Docusaurus Plushie"/></p>]]></content:encoded>
+        </item>
+    </channel>
+</rss>
