@@ -4,7 +4,8 @@
     "docs:dev": "vitepress dev",
     "docs:build": "vitepress build",
     "build": "vitepress build",
-    "docs:preview": "vitepress preview"
+    "docs:preview": "vitepress build&vitepress preview",
+    "docs:preview80": "vitepress preview docs --port 8080"
   },
   "dependencies": {
     "vitepress-plugin-pagefind": "^0.1.1"

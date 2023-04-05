@@ -4,6 +4,7 @@ import { pagefindPlugin } from 'vitepress-plugin-pagefind'
 export default defineConfig({
   title: "沫沫的时光机",
   description: "沫沫的知识库系统",
+  lang: ['zh-CN','en-US'],
   vite:{
     plugins:[pagefindPlugin()],
   },
